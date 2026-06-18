@@ -1,0 +1,391 @@
+:root {
+    --black: #0f0f12;
+    --black-soft: #16161d;
+    --panel: rgba(18, 19, 26, 0.94);
+    --panel-line: rgba(255, 255, 255, 0.1);
+    --crimson: #dc3545;
+    --crimson-glow: rgba(220, 53, 69, 0.56);
+    --neon: #00d9ff;
+    --neon-soft: rgba(0, 217, 255, 0.28);
+    --green: #30f27a;
+    --gold: #f6c343;
+    --white: #f6f8ff;
+    --muted: #9ca3b8;
+    --shadow: 0 20px 80px rgba(0, 0, 0, 0.65);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--white);
+    font-family: 'Orbitron', system-ui, sans-serif;
+    background:
+        radial-gradient(circle at top left, rgba(0, 217, 255, 0.14), transparent 28rem),
+        radial-gradient(circle at bottom right, rgba(220, 53, 69, 0.16), transparent 30rem),
+        linear-gradient(135deg, #07070a, var(--black));
+    overflow-x: hidden;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+.app-shell {
+    display: grid;
+    grid-template-columns: minmax(720px, 1fr) 380px;
+    gap: 24px;
+    width: min(1480px, calc(100vw - 32px));
+    margin: 0 auto;
+    padding: 28px 0;
+}
+
+.game-panel,
+.side-panel {
+    min-width: 0;
+}
+
+.title-strip,
+.panel-header,
+.session-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.title-strip {
+    margin-bottom: 16px;
+    padding: 18px 22px;
+    border: 1px solid var(--panel-line);
+    border-radius: 24px;
+    background: rgba(15, 15, 18, 0.72);
+    box-shadow: var(--shadow), inset 0 0 32px rgba(0, 217, 255, 0.05);
+}
+
+h1,
+h2,
+p {
+    margin: 0;
+}
+
+h1 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 0.98;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    text-shadow: 0 0 22px var(--neon-soft), 0 0 32px rgba(220, 53, 69, 0.24);
+}
+
+h2 {
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.eyebrow {
+    color: var(--neon);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--crimson);
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    margin-top: 8px;
+    text-shadow: 0 0 16px var(--crimson-glow);
+}
+
+.canvas-frame {
+    position: relative;
+    border: 1px solid rgba(0, 217, 255, 0.22);
+    border-radius: 24px;
+    overflow: hidden;
+    background: #050507;
+    box-shadow: var(--shadow), 0 0 34px rgba(0, 217, 255, 0.14);
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    image-rendering: auto;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    place-items: center;
+    padding: 28px;
+    background:
+        linear-gradient(180deg, rgba(5, 5, 8, 0.4), rgba(5, 5, 8, 0.82)),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 6px);
+    backdrop-filter: blur(10px);
+}
+
+.overlay.active {
+    display: grid;
+}
+
+.overlay-card,
+.panel-card {
+    border: 1px solid var(--panel-line);
+    border-radius: 24px;
+    background: var(--panel);
+    box-shadow: var(--shadow), inset 0 0 38px rgba(0, 217, 255, 0.05);
+}
+
+.overlay-card {
+    position: relative;
+    padding: 34px;
+    text-align: center;
+}
+
+.wide-card {
+    width: min(720px, 100%);
+}
+
+.compact-card,
+.auth-card {
+    width: min(460px, 100%);
+}
+
+.overlay-text {
+    color: var(--muted);
+    line-height: 1.7;
+    margin: 16px 0 24px;
+    font-family: system-ui, sans-serif;
+    font-size: 1rem;
+}
+
+.animus-ring {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 22px;
+    border: 2px solid rgba(0, 217, 255, 0.35);
+    border-top-color: var(--crimson);
+    border-radius: 50%;
+    box-shadow: 0 0 34px rgba(0, 217, 255, 0.18), inset 0 0 20px rgba(220, 53, 69, 0.15);
+    animation: spin 2.4s linear infinite;
+}
+
+.scanline-loader {
+    height: 6px;
+    width: 100%;
+    margin-bottom: 24px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--neon), var(--crimson), transparent);
+    background-size: 220% 100%;
+    animation: scan 1.25s linear infinite;
+}
+
+.control-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px auto 26px;
+    max-width: 460px;
+    text-align: left;
+}
+
+.control-grid span,
+.control-grid strong {
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+}
+
+.control-grid span {
+    color: var(--neon);
+}
+
+.primary-button,
+.ghost-button,
+.mini-button {
+    border: 0;
+    border-radius: 999px;
+    color: var(--white);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.primary-button {
+    padding: 13px 22px;
+    background: linear-gradient(135deg, var(--crimson), #8f1f2e);
+    box-shadow: 0 0 24px var(--crimson-glow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.ghost-button,
+.mini-button {
+    background: rgba(0, 217, 255, 0.08);
+    border: 1px solid rgba(0, 217, 255, 0.22);
+}
+
+.ghost-button {
+    padding: 12px 18px;
+    color: var(--neon);
+}
+
+.mini-button {
+    padding: 9px 13px;
+    color: var(--white);
+    font-size: 0.75rem;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+.primary-button:hover {
+    box-shadow: 0 0 32px var(--crimson-glow), 0 0 22px rgba(0, 217, 255, 0.18);
+}
+
+.auth-form {
+    display: grid;
+    gap: 12px;
+    text-align: left;
+    margin-top: 22px;
+}
+
+.auth-form label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+.auth-form input {
+    width: 100%;
+    border: 1px solid rgba(0, 217, 255, 0.18);
+    border-radius: 14px;
+    padding: 13px 14px;
+    color: var(--white);
+    background: rgba(255, 255, 255, 0.055);
+    outline: none;
+}
+
+.auth-form input:focus {
+    border-color: var(--neon);
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.12);
+}
+
+.message-line {
+    min-height: 22px;
+    color: var(--crimson);
+    font-family: system-ui, sans-serif;
+    font-size: 0.9rem;
+}
+
+.side-panel {
+    display: grid;
+    gap: 18px;
+    align-content: start;
+}
+
+.panel-card {
+    padding: 22px;
+}
+
+.panel-card p,
+.brief-list {
+    color: var(--muted);
+    font-family: system-ui, sans-serif;
+    line-height: 1.7;
+}
+
+.brief-list {
+    margin: 18px 0 0;
+    padding-left: 20px;
+}
+
+.brief-list li + li {
+    margin-top: 10px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 18px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+}
+
+th,
+td {
+    padding: 12px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-align: left;
+}
+
+th {
+    color: var(--neon);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+td {
+    color: var(--white);
+}
+
+.danger-card {
+    border-color: rgba(220, 53, 69, 0.5);
+    box-shadow: var(--shadow), 0 0 36px rgba(220, 53, 69, 0.18);
+}
+
+.win-card {
+    border-color: rgba(246, 195, 67, 0.5);
+    box-shadow: var(--shadow), 0 0 36px rgba(246, 195, 67, 0.18);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes scan {
+    to {
+        background-position: -220% 0;
+    }
+}
+
+@media (max-width: 1180px) {
+    .app-shell {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .app-shell {
+        width: min(100vw - 18px, 100%);
+        padding: 12px 0;
+    }
+
+    .title-strip,
+    .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .overlay-card {
+        padding: 22px;
+    }
+
+    .control-grid {
+        grid-template-columns: 1fr;
+    }
+}
